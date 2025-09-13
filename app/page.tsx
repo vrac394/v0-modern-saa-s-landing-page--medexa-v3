@@ -18,7 +18,7 @@ import {
   LogOut,
 } from "lucide-react"
 import Link from "next/link"
-import { createBrowserClient } from "@supabase/ssr"
+import { createClient } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 import type { User as SupabaseUser } from "@supabase/supabase-js"
 
@@ -27,10 +27,7 @@ export default function MedexaLanding() {
   const [userProfile, setUserProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  )
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
 
   useEffect(() => {
     // Get initial session
@@ -89,31 +86,27 @@ export default function MedexaLanding() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-heading font-black text-xl text-gray-900">Medexa</span>
+              <img src="/logo.svg" alt="MEDEXA" className="w-auto flex-row tracking-normal text-center h-72" />
             </div>
 
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#inicio" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              <a href="#inicio" className="text-gray-600 hover:text-[#3771c1] font-medium transition-colors">
                 Inicio
               </a>
-              <a href="#especialidades" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              <a href="#especialidades" className="text-gray-600 hover:text-[#3771c1] font-medium transition-colors">
                 Especialidades
               </a>
-              <a href="#doctores" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              <a href="#doctores" className="text-gray-600 hover:text-[#3771c1] font-medium transition-colors">
                 Doctores
               </a>
-              <a href="#como-funciona" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              <a href="#como-funciona" className="text-gray-600 hover:text-[#3771c1] font-medium transition-colors">
                 Cómo Funciona
               </a>
-              
             </nav>
 
             <div className="flex items-center space-x-3">
               {loading ? (
-                <div className="w-8 h-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent"></div>
+                <div className="w-8 h-8 animate-spin rounded-full border-2 border-[#3771c1] border-t-transparent"></div>
               ) : user ? (
                 // Authenticated user navbar
                 <>
@@ -136,8 +129,8 @@ export default function MedexaLanding() {
                     <LogOut className="w-4 h-4 mr-2" />
                     Cerrar Sesión
                   </Button>
-                  <div className="flex items-center space-x-2 bg-blue-50 px-3 py-2 rounded-lg">
-                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                  <div className="flex items-center space-x-2 bg-[#629DEB]/10 px-3 py-2 rounded-lg">
+                    <div className="w-8 h-8 bg-[#3771c1] rounded-full flex items-center justify-center">
                       <span className="text-white text-sm font-bold">
                         {userProfile?.full_name?.charAt(0) || user.email?.charAt(0).toUpperCase()}
                       </span>
@@ -151,11 +144,11 @@ export default function MedexaLanding() {
               ) : (
                 // Non-authenticated user navbar
                 <>
-                  <Link href="/auth/login?role=doctor">
+                  <Link href="/auth/register-doctor">
                     <Button
                       variant="outline"
                       size="sm"
-                      className="hidden sm:flex border-blue-600 text-blue-600 hover:bg-blue-50 bg-transparent text-sm px-4 py-2"
+                      className="hidden sm:flex border-[#3771c1] text-[#3771c1] hover:bg-[#629DEB]/10 bg-transparent text-sm px-4 py-2"
                     >
                       Soy Doctor
                     </Button>
@@ -163,7 +156,7 @@ export default function MedexaLanding() {
                   <Link href="/auth/login">
                     <Button
                       size="sm"
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 text-sm rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-blue-600/25"
+                      className="bg-[#3771c1] hover:bg-[#072472] text-white font-semibold px-4 py-2 text-sm rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-[#3771c1]/25"
                     >
                       Iniciar Sesión
                     </Button>
@@ -175,34 +168,37 @@ export default function MedexaLanding() {
         </div>
       </header>
 
-      <section className="relative bg-gradient-to-br from-white via-blue-50/30 to-cyan-50/20 py-8 sm:py-12 lg:py-16">
+      <section className="relative py-8 sm:py-12 lg:py-16 bg-gradient-to-br from-white via-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 lg:space-y-6 mb-8 lg:mb-12">
             <div className="space-y-3">
               <h1 className="font-heading font-black text-2xl sm:text-3xl lg:text-4xl xl:text-5xl text-gray-900 leading-tight max-w-4xl mx-auto">
-                Consulta médica en línea, <span className="text-blue-600">cuando y donde la necesites</span>
+                Consulta médica en línea, <span className="text-[#3771c1]">cuando y donde la necesitas</span>
               </h1>
-              <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto">
                 Conéctate con médicos certificados en minutos. Atención médica de calidad desde la comodidad de tu
                 hogar.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group">
-                <div className="absolute inset-0">
-                  <img src="/doctor-home-visit.png" alt="Exámenes a domicilio" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-600/70 to-blue-400/50"></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group bg-gradient-to-br from-white via-blue-50 to-[#629DEB]/10">
+                <div className="absolute inset-0 opacity-30">
+                  <img
+                    src="/nurse-visiting-elderly-woman-at-home.jpg"
+                    alt="Enfermera visitando a señora de la tercera edad"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="relative z-10 p-6 sm:p-8 lg:p-10 text-white min-h-[280px] sm:min-h-[320px] flex flex-col justify-between">
+                <div className="relative z-10 p-6 sm:p-8 lg:p-10 text-gray-900 min-h-[280px] sm:min-h-[320px] flex flex-col justify-between">
                   <div>
                     <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                        <MapPin className="w-6 h-6 text-white" />
+                      <div className="w-12 h-12 bg-[#3771c1]/20 rounded-full flex items-center justify-center">
+                        <MapPin className="w-6 h-6 text-[#3771c1]" />
                       </div>
-                      <h3 className="font-heading font-bold text-xl sm:text-2xl">Exámenes a domicilio</h3>
+                      <h3 className="font-heading font-bold text-xl sm:text-2xl text-gray-900">Exámenes a domicilio</h3>
                     </div>
-                    <p className="text-blue-100 text-base sm:text-lg leading-relaxed mb-6">
+                    <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">
                       Elige el día y hora, nosotros vamos a donde estés. Servicio profesional en la comodidad de tu
                       hogar.
                     </p>
@@ -211,7 +207,7 @@ export default function MedexaLanding() {
                     <Link href="/agendar-domicilio">
                       <Button
                         size="lg"
-                        className="w-full bg-white text-blue-600 hover:bg-blue-50 font-bold py-4 sm:py-5 text-lg rounded-xl transition-all duration-300 hover:shadow-xl hover:scale-105 transform group-hover:animate-pulse"
+                        className="w-full bg-[#3771c1] text-white hover:bg-[#072472] font-bold py-4 sm:py-5 text-lg rounded-xl transition-all duration-300 hover:shadow-xl hover:scale-105 transform group-hover:animate-pulse"
                       >
                         <Calendar className="mr-3 w-5 h-5" />
                         Agendar Ahora
@@ -221,7 +217,7 @@ export default function MedexaLanding() {
                     <Link href="/auth/login?redirect=/agendar-domicilio">
                       <Button
                         size="lg"
-                        className="w-full bg-white text-blue-600 hover:bg-blue-50 font-bold py-4 sm:py-5 text-lg rounded-xl transition-all duration-300 hover:shadow-xl hover:scale-105 transform group-hover:animate-pulse"
+                        className="w-full bg-[#3771c1] text-white hover:bg-[#072472] font-bold py-4 sm:py-5 text-lg rounded-xl transition-all duration-300 hover:shadow-xl hover:scale-105 transform group-hover:animate-pulse"
                       >
                         <Calendar className="mr-3 w-5 h-5" />
                         Iniciar Sesión para Agendar
@@ -231,20 +227,23 @@ export default function MedexaLanding() {
                 </div>
               </div>
 
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group">
-                <div className="absolute inset-0">
-                  <img src="/telemedicine-consultation.png" alt="Telemedicina" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-cyan-900/90 via-cyan-600/70 to-cyan-400/50"></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group bg-gradient-to-br from-white via-blue-50 to-[#629DEB]/10">
+                <div className="absolute inset-0 opacity-30">
+                  <img
+                    src="/mother-telemedicine-consultation-with-doctor.jpg"
+                    alt="Madre en consulta de telemedicina"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="relative z-10 p-6 sm:p-8 lg:p-10 text-white min-h-[280px] sm:min-h-[320px] flex flex-col justify-between">
+                <div className="relative z-10 p-6 sm:p-8 lg:p-10 text-gray-900 min-h-[280px] sm:min-h-[320px] flex flex-col justify-between">
                   <div>
                     <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                        <Video className="w-6 h-6 text-white" />
+                      <div className="w-12 h-12 bg-[#3771c1]/20 rounded-full flex items-center justify-center">
+                        <Video className="w-6 h-6 text-[#3771c1]" />
                       </div>
-                      <h3 className="font-heading font-bold text-xl sm:text-2xl">Telemedicina</h3>
+                      <h3 className="font-heading font-bold text-xl sm:text-2xl text-gray-900">Telemedicina</h3>
                     </div>
-                    <p className="text-cyan-100 text-base sm:text-lg leading-relaxed mb-6">
+                    <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">
                       Atiéndete al instante o agenda con un especialista. Consultas médicas desde cualquier lugar.
                     </p>
                   </div>
@@ -252,7 +251,7 @@ export default function MedexaLanding() {
                     <Link href="/agendar-telemedicina">
                       <Button
                         size="lg"
-                        className="w-full bg-white text-cyan-600 hover:bg-cyan-50 font-bold py-4 sm:py-5 text-lg rounded-xl transition-all duration-300 hover:shadow-xl hover:scale-105 transform group-hover:animate-pulse"
+                        className="w-full bg-[#3771c1] text-white hover:bg-[#072472] font-bold py-4 sm:py-5 text-lg rounded-xl transition-all duration-300 hover:shadow-xl hover:scale-105 transform group-hover:animate-pulse"
                       >
                         <Calendar className="mr-3 w-5 h-5" />
                         Agendar Ahora
@@ -262,7 +261,7 @@ export default function MedexaLanding() {
                     <Link href="/auth/login?redirect=/agendar-telemedicina">
                       <Button
                         size="lg"
-                        className="w-full bg-white text-cyan-600 hover:bg-cyan-50 font-bold py-4 sm:py-5 text-lg rounded-xl transition-all duration-300 hover:shadow-xl hover:scale-105 transform group-hover:animate-pulse"
+                        className="w-full bg-[#3771c1] text-white hover:bg-[#072472] font-bold py-4 sm:py-5 text-lg rounded-xl transition-all duration-300 hover:shadow-xl hover:scale-105 transform group-hover:animate-pulse"
                       >
                         <Calendar className="mr-3 w-5 h-5" />
                         Iniciar Sesión para Agendar
@@ -276,10 +275,10 @@ export default function MedexaLanding() {
         </div>
       </section>
 
-      <section className="py-8 sm:py-12 bg-gradient-to-br from-blue-100 via-blue-50 via-white via-blue-50 to-blue-100 relative overflow-hidden">
+      <section className="py-8 sm:py-12 bg-gradient-to-br from-[#629DEB]/10 via-white via-white via-[#629DEB]/10 to-[#629DEB]/10 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-r from-blue-400/30 via-blue-300/20 to-transparent"></div>
-          <div className="absolute bottom-0 right-0 w-full h-1/3 bg-gradient-to-l from-blue-400/30 via-blue-300/20 to-transparent"></div>
+          <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-r from-[#3771c1]/30 via-[#629DEB]/20 to-transparent"></div>
+          <div className="absolute bottom-0 right-0 w-full h-1/3 bg-gradient-to-l from-[#3771c1]/30 via-[#629DEB]/20 to-transparent"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -295,8 +294,8 @@ export default function MedexaLanding() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
             <div className="flex items-center space-x-3 text-gray-600">
-              <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center flex-shrink-0">
-                <Calendar className="w-5 h-5 text-blue-600" />
+              <div className="w-10 h-10 bg-[#629DEB]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <Calendar className="w-5 h-5 text-[#3771c1]" />
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900 text-sm sm:text-base">Agenda tus exámenes</h4>
@@ -356,8 +355,8 @@ export default function MedexaLanding() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             <Card className="border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer">
               <CardHeader className="text-center pb-2 pt-3 px-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <Stethoscope className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#629DEB]/10 rounded-xl flex items-center justify-center mx-auto mb-2">
+                  <Stethoscope className="w-5 h-5 sm:w-6 sm:h-6 text-[#3771c1]" />
                 </div>
                 <CardTitle className="font-heading font-bold text-xs sm:text-sm lg:text-base">
                   Medicina General
@@ -401,7 +400,7 @@ export default function MedexaLanding() {
             <Button
               variant="outline"
               size="lg"
-              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 bg-transparent"
+              className="border-2 border-[#3771c1] text-[#3771c1] hover:bg-[#629DEB]/10 bg-transparent"
             >
               Ver todas las especialidades
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -670,18 +669,18 @@ export default function MedexaLanding() {
         </div>
       </section>
 
-      <section className="py-12 sm:py-16 bg-blue-600">
+      <section className="py-12 sm:py-16 bg-[#3771c1]">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-6">
             ¿Listo para tu consulta médica en línea?
           </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
             Únete a miles de pacientes que ya confían en Medexa para su atención médica. Agenda tu primera consulta hoy.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              className="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-8 py-4 rounded-lg transition-all duration-200"
+              className="bg-white text-[#3771c1] hover:bg-[#629DEB]/10 font-semibold px-8 py-4 rounded-lg transition-all duration-200"
             >
               <Calendar className="mr-2 w-5 h-5" />
               Comenzar ahora
@@ -689,7 +688,7 @@ export default function MedexaLanding() {
             <Button
               size="lg"
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold px-8 py-4 rounded-lg transition-all duration-200 bg-transparent"
+              className="border-2 border-white text-white hover:bg-white hover:text-[#3771c1] font-semibold px-8 py-4 rounded-lg transition-all duration-200 bg-transparent"
             >
               Conocer más
             </Button>

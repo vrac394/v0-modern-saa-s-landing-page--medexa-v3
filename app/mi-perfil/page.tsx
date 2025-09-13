@@ -146,17 +146,54 @@ export default function MiPerfil() {
           role: userRecord.role,
         })
 
-        const { data: appointmentsData, error: appointmentsError } = await supabase
-          .from("appointments")
-          .select("*")
-          .eq("user_id", authUser.id)
-          .order("date", { ascending: true })
+        let appointmentsData = []
+        if (userRecord.role === "patient") {
+          const { data, error: appointmentsError } = await supabase
+            .from("appointments")
+            .select("*")
+            .eq("patient_id", authUser.id)
+            .order("scheduled_date", { ascending: true })
 
-        if (appointmentsError) {
-          console.error("Error fetching appointments:", appointmentsError)
-        } else {
-          setAppointments(appointmentsData || [])
+          if (appointmentsError) {
+            console.error("Error fetching appointments:", appointmentsError)
+          } else {
+            appointmentsData = data || []
+          }
+        } else if (userRecord.role === "doctor") {
+          const { data, error: appointmentsError } = await supabase
+            .from("appointments")
+            .select("*")
+            .eq("doctor_id", authUser.id)
+            .order("scheduled_date", { ascending: true })
+
+          if (appointmentsError) {
+            console.error("Error fetching appointments:", appointmentsError)
+          } else {
+            appointmentsData = data || []
+          }
         }
+
+        const transformedAppointments = appointmentsData.map((apt: any) => ({
+          id: apt.id,
+          type: apt.appointment_type,
+          specialty: "Consulta General", // Default since specialty isn't in appointments table
+          date: apt.scheduled_date,
+          time: apt.scheduled_time,
+          status: apt.status,
+          cost: apt.total_cost,
+          patient_name: "Paciente", // Will need to join with patients table for real name
+          patient_age: 0, // Will need to join with patients table for real age
+          phone: "", // Will need to join with patients table for real phone
+          email: "", // Will need to join with patients table for real email
+          city: apt.address ? apt.address.split(",").pop()?.trim() || "" : "",
+          address: apt.address,
+          reason: apt.symptoms || "No especificado",
+          services: "", // Will need to join with home_visit_services table
+          urgency: "",
+          daily_room_url: apt.daily_room_url,
+        }))
+
+        setAppointments(transformedAppointments)
       } catch (error) {
         console.error("Error fetching user data:", error)
       } finally {
